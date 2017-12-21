@@ -1,0 +1,14 @@
+{
+  "name": "scriptives",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Andrew McGillivray <ap.mcgillivray@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^22.0.3"
+  }
+}
