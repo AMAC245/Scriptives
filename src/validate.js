@@ -27,9 +27,3 @@ function validate(sample) {
 }
 
 module.exports = validate
-
-
-
-
-
-
