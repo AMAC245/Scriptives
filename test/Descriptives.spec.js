@@ -34,6 +34,12 @@ describe('Descriptives', () => {
         expect(stats.variance).toBe(2.5) 
         expect(stats.sd).toBeCloseTo(1.58, 2)
         expect(stats.df).toBe(4)    
+        expect(stats.median()).toBe(3)
     })
 
+    it('should return identified outliers', () => {
+        const stats = new Descriptives([-55,1,2,3,4,55])
+        expect(stats.outliers()).toEqual([-55,55])
+    })
+    
 })

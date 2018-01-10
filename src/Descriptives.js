@@ -1,5 +1,6 @@
 const TYPED_ARRAYS = require('./typed_arrays')
 const sum = require('./utils/sum')
+const median = require('./utils/median')
 
 function Descriptives(sample) {
     if (TYPED_ARRAYS.indexOf(sample.constructor) === -1) {
@@ -49,6 +50,32 @@ Descriptives.prototype.sd = function() {
 
 Descriptives.prototype.df = function() {
     return this.population - 1
+}
+
+Descriptives.prototype.median = function() {
+    return median(this.sample)
+}
+
+Descriptives.prototype.outliers = function() {
+    const q1 = []
+    const q3 = []
+    this.sample.filter(item => {
+        item >= median(this.sample) 
+            ? q3.push(item) 
+            : q1.push(item)    
+    })
+    
+    const iqr = median(q3) - median(q1)
+    const upperThreshold = median(q3) * 1.5
+    const lowerThreshold = median(q1) - 1.5 * iqr
+
+    const candidates = this.sample.filter(item => {
+        if( item > upperThreshold || 
+            item < lowerThreshold
+        ) return item      
+    })
+    
+    return candidates
 }
 
 module.exports = Descriptives
