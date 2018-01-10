@@ -1,29 +1,39 @@
 const Descriptives = require('../src/Descriptives')
+const validate = require('../src/validate')
 
-describe('Descriptives', () => {
+describe('validate', () => {
+
     it('should throw if sample is not an array/typed array', () => {     
-       expect(() => {
-           new Descriptives(1)
-       }).toThrow()
-
-       expect(() => {
-           new Descriptives([1])
-       }).not.toThrow()  
-       
-       expect(() => {
-           new Descriptives (new Uint8Array([1,2]))
-       }).not.toThrow()
-    })
-
-    it(`should still refer to the correct 'this' when new operator is omitted`, () => {
-        const stats = Descriptives([-2,-1,0,1,2.5])
-        expect(stats).toBeInstanceOf(Descriptives)
-    })
+        expect(() => {
+            new Descriptives(1)
+        }).toThrow()
+ 
+        expect(() => {
+            new Descriptives([1])
+        }).not.toThrow()  
+        
+        expect(() => {
+            new Descriptives (new Uint8Array([1,2]))
+        }).not.toThrow()
+     })
 
     it('should throw with value and key of item not a number', () => {
         expect(() => {
             new Descriptives([1,2,3,'string'])
         }).toThrow(/'string'/ && /3/)
+    })
+
+    it('should perform correct type conversion', () => {
+        expect(validate([1,2,3,'4'])).toEqual([1,2,3,4])
+    })
+
+})
+
+describe('Descriptives', () => {
+
+    it(`should still refer to the correct 'this' when new operator is omitted`, () => {
+        const stats = Descriptives([-2,-1,0,1,2.5])
+        expect(stats).toBeInstanceOf(Descriptives)
     })
 
     it('it should return the correct sample statistics', () => {
@@ -34,12 +44,12 @@ describe('Descriptives', () => {
         expect(stats.variance).toBe(2.5) 
         expect(stats.sd).toBeCloseTo(1.58, 2)
         expect(stats.df).toBe(4)    
-        expect(stats.median()).toBe(3)
+        expect(stats.median).toBe(3)
     })
 
     it('should return identified outliers', () => {
         const stats = new Descriptives([-55,1,2,3,4,55])
-        expect(stats.outliers()).toEqual([-55,55])
+        expect(stats.outliers).toEqual([-55,55])
     })
     
 })

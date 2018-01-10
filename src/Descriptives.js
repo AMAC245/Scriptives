@@ -1,22 +1,14 @@
 const TYPED_ARRAYS = require('./typed_arrays')
 const sum = require('./utils/sum')
 const median = require('./utils/median')
+const validate = require('./validate')
 
 function Descriptives(sample) {
-    if (TYPED_ARRAYS.indexOf(sample.constructor) === -1) {
-        throw new TypeError('Expected sample to be an array')
-    }
-        
-    const filterDataType = sample.filter((value, key) => {
-        if(typeof value !== 'number') {
-            throw new TypeError(`Expected sample to only contain numbers: '${value}' found at ${key}`)
-        }
-    })
-        
-    // extend the prototype chain if required 
-    if (!(this instanceof Descriptives)) return new Descriptives(sample)
-         
-    this.init(sample)
+    if(this instanceof Descriptives) {
+        validate(sample) && this.init(sample) 
+    } else {
+        return new Descriptives(sample)
+    }    
 }
 
 Descriptives.prototype.init = function(sample) {
@@ -26,7 +18,9 @@ Descriptives.prototype.init = function(sample) {
     this.mean = this.mean()
     this.variance = this.variance()
     this.sd = this.sd()
-    this.df = this.df()  
+    this.df = this.df() 
+    this.median = this.median() 
+    this.outliers = this.outliers() 
 }
 
 Descriptives.prototype.sum = function() {
@@ -75,7 +69,9 @@ Descriptives.prototype.outliers = function() {
         ) return item      
     })
     
-    return candidates
+    return candidates.length 
+        ? candidates 
+        : 'No outliers detected'
 }
 
 module.exports = Descriptives
