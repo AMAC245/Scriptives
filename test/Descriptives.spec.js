@@ -37,7 +37,7 @@ describe('Descriptives', () => {
     })
 
     it('it should return the correct sample statistics', () => {
-        const stats = new Descriptives([1,2,3,4,5])
+        const stats = new Descriptives([1,2,'3',4,5])
 
         expect(stats.sum).toBe(15)
         expect(stats.mean).toBe(3) 

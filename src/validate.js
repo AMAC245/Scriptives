@@ -8,29 +8,28 @@ function validate(sample) {
     ) 
   }
   
-  const flagged = []    
-  sample.map((value,key) => {
-      if(typeof value !== 'number') {
-          const int = parseInt(value)
-          if(isNaN(int)) {
-              throw new TypeError(`Invalid type detected in dataset: '${value}' at ${key}`)  
-          } else {
-            flagged.push(int)
-            sample.splice(key)
-          }
-      }    
-  }) 
-  
-  if(flagged.length) {
-      console.warn(
+  return sample.map((value, key) => {
+    if(typeof value !== 'number') {
+      const int = parseInt(value)
+      if(isNaN(int)) {
+          throw new TypeError(`Invalid type detected in dataset: '${value}' at ${key}`)  
+      } else {
+        console.warn(
           'Type conversion has been required within your dataset. ' +
           'To maintain data integrity, revisions may be needed ' +
-          `for entries at positions: [${flagged}]`
-      )
-      return sample.concat(flagged)
-  }
-  return true 
+          `for entries at [${key}]`
+        ) 
+        return parseInt(value)
+      }
+    } 
+    return value  
+  })
 }
 
 module.exports = validate
+
+
+
+
+
 

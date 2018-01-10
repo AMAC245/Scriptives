@@ -5,10 +5,10 @@ const validate = require('./validate')
 
 function Descriptives(sample) {
     if(this instanceof Descriptives) {
-        validate(sample) && this.init(sample) 
+        this.init(validate(sample))
     } else {
-        return new Descriptives(sample)
-    }    
+        return new Descriptives(sample) 
+    }
 }
 
 Descriptives.prototype.init = function(sample) {
